@@ -83,6 +83,21 @@ if user_access_level:
                         count = count + 1
                     # end for
                 else:
+                    def save_uploaded_file(uploaded_file, directory):
+                        if not os.path.exists(directory):
+                            os.makedirs(directory)
+                        # end if
+                        with open(os.path.join(directory, uploaded_file.name), "wb") as f:
+                            f.write(uploaded_file.getbuffer())
+                        # end with
+                        return st.success(f"Saved file: {uploaded_file.name} to {directory}")
+                    # end of def
+                    st.write("you may upload a new PWOR model-run *.py file")
+                    directory = st.selectbox("select a directory", sourcedir_array)
+                    uploaded_file = st.file_uploader("Upload your PWOR script file here:", type=["py"])
+                    if uploaded_file is not None and directory:
+                        save_uploaded_file(uploaded_file, directory)
+                    # end if
                     st.write("Check with your administrator for the process directories")
                     st.write("Ensure that your models and data are in the right directory")
                 # end if
